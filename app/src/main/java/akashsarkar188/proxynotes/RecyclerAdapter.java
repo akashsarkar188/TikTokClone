@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -40,7 +41,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.video_layout, parent, false);
-
         return new ViewHolder(view);
     }
 
@@ -51,18 +51,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         initializePlayer(holder,url);
         player.setRepeatMode(Player.REPEAT_MODE_ALL);
-
-
+        player.setPlayWhenReady(true);
         holder.playerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (flag) {
-                    player.setPlayWhenReady(true);
-                    flag = false;
-                } else {
-                    player.setPlayWhenReady(false);
-                    flag = true;
-                }
+
             }
         });
 
@@ -72,6 +65,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 super.onSwipeLeft();
                 Log.e("SwipeDetected", "onSwipeLeft: ");
                 context.startActivity(new Intent(context, Profile.class).putExtra("id",position));
+                //Activity activity = (Activity) context;
+                //activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
 
             @Override
@@ -80,6 +75,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 Log.e("SwipeDetected", "onSwipeRight: " );
                 Toast.makeText(context, "Subscribed to video creator " + position, Toast.LENGTH_SHORT).show();
             }
+
+            public void onClick(){
+                Log.d("OnCLickPlayer", "onClick() returned: " + flag);
+                if (flag) {
+                    player.setPlayWhenReady(true);
+                    flag = false;
+                } else {
+                    player.setPlayWhenReady(false);
+                    flag = true;
+                }
+            }
+
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return super.onTouch(v, event);
+            }
+
         });
     }
 

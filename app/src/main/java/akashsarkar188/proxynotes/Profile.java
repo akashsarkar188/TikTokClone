@@ -14,6 +14,19 @@ public class Profile extends AppCompatActivity {
 
         tx = findViewById(R.id.tx);
 
+        tx.setOnTouchListener(new OnSwipeTouchListener(Profile.this){
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+                finish();
+            }
+        });
+
         tx.setText("Profile For User ID \"" + getIntent().getIntExtra("id",0) + "\"\nDue to shortage of time could not build complete profile page");
     }
 }
